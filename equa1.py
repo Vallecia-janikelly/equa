@@ -1,35 +1,22 @@
-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# ============================================
-# CONFIGURAÇÃO DA PÁGINA
-# ============================================
-
+# Configuração da página
 st.set_page_config(
     page_title="Equação do 1º Grau",
     page_icon="📈",
     layout="centered"
 )
 
-# ============================================
-# CAMINHO DA PASTA DO PROGRAMA
-# ============================================
-
+# Caminho da pasta do aplicativo
 PASTA_APP = Path(__file__).parent
 
-# ============================================
-# CAMINHO DA LOGOMARCA
-# ============================================
-
+# Caminho da imagem
 CAMINHO_LOGO = PASTA_APP / "mat.jpeg"
 
-# ============================================
-# LOGOMARCA
-# ============================================
-
+# Exibe a imagem, se existir
 if CAMINHO_LOGO.exists():
     col1, col2, col3 = st.columns([1, 2, 1])
 
@@ -39,65 +26,57 @@ if CAMINHO_LOGO.exists():
             use_container_width=True
         )
 else:
-    st.warning("⚠️ A imagem mat.jpeg não foi encontrada.")
+    st.warning("A imagem mat.jpeg não foi encontrada. ⚠️")
 
-# ============================================
-# TÍTULO
-# ============================================
 
-st.title("📈 Equação do 1º Grau")
+# Título
+st.title("Equação do 1º Grau 📈")
+
 st.write("Equação no formato:")
+
 st.latex(r"ax + b = 0")
 
-# ============================================
-# ENTRADA DOS VALORES
-# ============================================
 
+# Entrada dos valores
 a = st.number_input(
     "Digite o valor de a",
-    value=1.0,
-    step=1.0
+    value=1,
+    step=1
 )
 
 b = st.number_input(
     "Digite o valor de b",
-    value=0.0,
-    step=1.0
+    value=0,
+    step=1
 )
 
-# ============================================
-# BOTÃO CALCULAR
-# ============================================
 
+# Botão calcular
 if st.button("Calcular", use_container_width=True):
 
-    # ========================================
-    # VERIFICA O VALOR DE A
-    # ========================================
-
+    # Caso a seja igual a zero
     if a == 0:
+
+        # 0x + 0 = 0
         if b == 0:
             st.warning(
-                "⚠️ A equação possui infinitas soluções."
+                "A equação possui infinitas soluções."
             )
+
+        # 0x + b = 0, com b diferente de zero
         else:
             st.error(
-                "❌ A equação não possui solução."
+                "A equação não possui solução."
             )
 
+    # Caso a seja diferente de zero
     else:
 
-        # ====================================
-        # CALCULA A RAIZ
-        # ====================================
-
+        # Cálculo da raiz
         x_raiz = -b / a
 
-        # ====================================
-        # RESULTADO
-        # ====================================
-
-        st.subheader("✅ Resultado")
+        # Resultado
+        st.subheader("Resultado ✅")
 
         st.write("A raiz da equação é:")
 
@@ -105,92 +84,79 @@ if st.button("Calcular", use_container_width=True):
             f"x = {x_raiz:.2f}"
         )
 
-        # ====================================
-        # MOSTRA A EQUAÇÃO
-        # ====================================
-
+        # Equação
         st.subheader("Equação")
 
         if b >= 0:
             st.latex(
-                rf"{a:g}x + {b:g} = 0"
+                f"{a}x + {b} = 0"
             )
         else:
             st.latex(
-                rf"{a:g}x - {abs(b):g} = 0"
+                f"{a}x - {abs(b)} = 0"
             )
 
-        # ====================================
-        # MOSTRA O CÁLCULO
-        # ====================================
-
+        # Resolução
         st.subheader("Resolução")
 
         if b >= 0:
             st.latex(
-                rf"{a:g}x + {b:g} = 0"
+                f"{a}x + {b} = 0"
             )
         else:
             st.latex(
-                rf"{a:g}x - {abs(b):g} = 0"
+                f"{a}x - {abs(b)} = 0"
             )
 
         st.latex(
-            rf"{a:g}x = {-b:g}"
+            f"{a}x = {-b}"
         )
 
         st.latex(
-            rf"x = \frac{{{-b:g}}}{{{a:g}}}"
+            rf"x = \frac{{{-b}}}{{{a}}}"
         )
 
         st.latex(
-            rf"x = {x_raiz:.2f}"
+            f"x = {x_raiz:.2f}"
         )
 
-        # ====================================
-        # GRÁFICO
-        # ====================================
+        # Gráfico
+        st.subheader("Gráfico da função 📊")
 
-        st.subheader("📊 Gráfico da função")
-
-        # Cria intervalo para o gráfico
         x = np.linspace(
             x_raiz - 10,
             x_raiz + 10,
             500
         )
 
-        # Função do primeiro grau
         y = a * x + b
 
-        # Cria gráfico
         fig, ax = plt.subplots(
             figsize=(8, 5)
         )
 
-        # Desenha a reta
+        # Linha da função
         ax.plot(
             x,
             y,
             linewidth=2,
-            label=f"y = {a:g}x + {b:g}"
+            label=f"y = {a}x + {b}"
         )
 
-        # Eixo X
+        # Eixos
         ax.axhline(
             y=0,
             color="black",
             linewidth=1
         )
 
-        # Eixo Y
         ax.axvline(
             x=0,
             color="black",
             linewidth=1
         )
 
-        # Marca a raiz
+        # Ponto da raiz
         ax.scatter(
             [x_raiz],
             [0],
@@ -200,10 +166,7 @@ if st.button("Calcular", use_container_width=True):
             label=f"Raiz x = {x_raiz:.2f}"
         )
 
-        # ====================================
-        # CONFIGURAÇÃO DO GRÁFICO
-        # ====================================
-
+        # Configurações do gráfico
         ax.set_xlabel("x")
         ax.set_ylabel("y")
 
@@ -214,21 +177,17 @@ if st.button("Calcular", use_container_width=True):
         ax.grid(True)
         ax.legend()
 
-        # ====================================
-        # MOSTRA GRÁFICO
-        # ====================================
-
+        # Exibe o gráfico
         st.pyplot(fig)
 
+        # Fecha a figura
         plt.close(fig)
 
-# ============================================
-# RODAPÉ
-# ============================================
 
+# Rodapé
 st.divider()
 
 st.caption(
-    "📚 Calculadora de Equação do 1º Grau"
+    "Calculadora de Equação do 1º Grau 📚"
 )
-```
+
