@@ -58,7 +58,7 @@ hr {
 PASTA_APP = Path(__file__).parent
 
 # Caminho da imagem
-CAMINHO_LOGO = PASTA_APP / "mat.jpeg"
+CAMINHO_LOGO = PASTA_APP / "mat.jpg"
 
 # Exibe a imagem, se existir
 if CAMINHO_LOGO.exists():
@@ -70,7 +70,7 @@ if CAMINHO_LOGO.exists():
             use_container_width=True
         )
 else:
-    st.warning("A imagem mat.jpeg não foi encontrada. ⚠️")
+    st.warning("A imagem mat.jpg não foi encontrada. ⚠️")
 
 
 # Título
