@@ -1,6 +1,4 @@
 import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Configuração da página
@@ -54,7 +52,10 @@ hr {
 """, unsafe_allow_html=True)
 
 
-# Caminho da pasta do aplicativo
+# =========================
+# CAMINHO DO APLICATIVO
+# =========================
+
 PASTA_APP = Path(__file__).parent
 
 # Caminho da imagem
@@ -62,6 +63,7 @@ CAMINHO_LOGO = PASTA_APP / "mat.jpg"
 
 # Exibe a imagem, se existir
 if CAMINHO_LOGO.exists():
+
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
@@ -69,11 +71,17 @@ if CAMINHO_LOGO.exists():
             str(CAMINHO_LOGO),
             use_container_width=True
         )
+
 else:
-    st.warning("A imagem mat.jpg não foi encontrada. ⚠️")
+    st.warning(
+        "A imagem mat.jpg não foi encontrada. ⚠️"
+    )
 
 
-# Título
+# =========================
+# TÍTULO
+# =========================
+
 st.title("Equação do 1º Grau 📈")
 
 st.write("Equação no formato:")
@@ -81,7 +89,10 @@ st.write("Equação no formato:")
 st.latex(r"ax + b = 0")
 
 
-# Entrada dos valores
+# =========================
+# ENTRADA DOS VALORES
+# =========================
+
 a = st.number_input(
     "Digite o valor de a",
     value=1,
@@ -95,145 +106,134 @@ b = st.number_input(
 )
 
 
-# Botão calcular
+# =========================
+# BOTÃO CALCULAR
+# =========================
+
 if st.button("Calcular", use_container_width=True):
 
-    # Caso a seja igual a zero
+    # =========================
+    # CASO a = 0
+    # =========================
+
     if a == 0:
 
         # 0x + 0 = 0
         if b == 0:
+
             st.warning(
                 "A equação possui infinitas soluções."
             )
 
-        # 0x + b = 0, com b diferente de zero
+        # 0x + b = 0
         else:
+
             st.error(
                 "A equação não possui solução."
             )
 
-    # Caso a seja diferente de zero
+    # =========================
+    # CASO a ≠ 0
+    # =========================
+
     else:
 
         # Cálculo da raiz
         x_raiz = -b / a
 
-        # Resultado
+        # =========================
+        # RESULTADO
+        # =========================
+
         st.subheader("Resultado ✅")
 
-        st.write("A raiz da equação é:")
+        st.write(
+            "A raiz da equação é:"
+        )
 
         st.success(
             f"x = {x_raiz:.2f}"
         )
 
-        # Equação
+        # =========================
+        # EQUAÇÃO
+        # =========================
+
         st.subheader("Equação")
 
         if b >= 0:
+
             st.latex(
                 f"{a}x + {b} = 0"
             )
+
         else:
+
             st.latex(
                 f"{a}x - {abs(b)} = 0"
             )
 
-        # Resolução
+        # =========================
+        # RESOLUÇÃO
+        # =========================
+
         st.subheader("Resolução")
 
+        # Primeira linha
         if b >= 0:
+
             st.latex(
                 f"{a}x + {b} = 0"
             )
+
         else:
+
             st.latex(
                 f"{a}x - {abs(b)} = 0"
             )
 
+        # Segunda linha
         st.latex(
             f"{a}x = {-b}"
         )
 
+        # Terceira linha
         st.latex(
             rf"x = \frac{{{-b}}}{{{a}}}"
         )
 
+        # Resultado final
         st.latex(
             f"x = {x_raiz:.2f}"
         )
 
-        # Gráfico
-        st.subheader("Gráfico da função 📊")
+        # =========================
+        # EXPLICAÇÃO
+        # =========================
 
-        x = np.linspace(
-            x_raiz - 10,
-            x_raiz + 10,
-            500
+        st.subheader("💡 Como foi calculado?")
+
+        st.write(
+            "Para encontrar a raiz, isolamos o x:"
         )
 
-        y = a * x + b
-
-        fig, ax = plt.subplots(
-            figsize=(8, 5)
+        st.write(
+            "1. Passamos o valor de b para o outro lado."
         )
 
-        # Fundo do gráfico
-        fig.patch.set_facecolor("#FFE4EC")
-        ax.set_facecolor("#FFF0F5")
-
-        # Linha da função
-        ax.plot(
-            x,
-            y,
-            color="#FF1493",
-            linewidth=2,
-            label=f"y = {a}x + {b}"
+        st.write(
+            "2. Dividimos o resultado pelo valor de a."
         )
 
-        # Eixos
-        ax.axhline(
-            y=0,
-            color="black",
-            linewidth=1
+        st.write(
+            "3. Assim encontramos o valor de x."
         )
 
-        ax.axvline(
-            x=0,
-            color="black",
-            linewidth=1
-        )
 
-        # Ponto da raiz
-        ax.scatter(
-            [x_raiz],
-            [0],
-            color="red",
-            s=100,
-            zorder=5,
-            label=f"Raiz x = {x_raiz:.2f}"
-        )
+# =========================
+# RODAPÉ
+# =========================
 
-        # Configurações do gráfico
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-
-        ax.set_title(
-            "Gráfico da Função do 1º Grau"
-        )
-
-        ax.grid(True)
-        ax.legend()
-
-        # Exibe o gráfico
-        st.pyplot(fig)
-
-        # Fecha a figura
-        plt.close(fig)
-
-
-# Rodapé
 st.divider()
 
 st.caption(
